@@ -1,16 +1,53 @@
 <script setup>
-import { reactive } from "vue";
+import { ref,reactive } from "vue";
 import { handleLoginInterface } from "@/api/login.js"
 import { setItem } from "@/utils/storage.js"
 import { useRouter } from 'vue-router'
 
 const router = useRouter();
+const usernameFocused = ref(false);
+const codenameFocused = ref(false);
+const passwordFocused = ref(false);
+const authcodeFocused = ref(false);
 const loginData = reactive({
   username: "",
   codename: "",
   password: "",
   authcode: ""
 });
+
+const handleUsernameFocus = () => {
+  usernameFocused.value = true;
+};
+const handleUsernameBlur = () => {
+  if(loginData.username === ""){
+    usernameFocused.value = false;
+  }
+};
+const handleCodenameFocus = () => {
+  codenameFocused.value = true;
+};
+const handleCodenameBlur = () => {
+  if(loginData.codename === ""){
+    codenameFocused.value = false;
+  }
+};
+const handlePasswordFocus = () => {
+  passwordFocused.value = true;
+};
+const handlePasswordBlur = () => {
+  if(loginData.password === ""){
+    passwordFocused.value = false;
+  }
+};
+const handleAuthcodeFocus = () => {
+  authcodeFocused.value = true;
+};
+const handleAuthcodeBlur = () => {
+  if(loginData.authcode === ""){
+    authcodeFocused.value = false;
+  }
+};
 
 const handleLogin = async ()=>{
   const result = await handleLoginInterface(loginData);
@@ -34,10 +71,14 @@ const handleLogin = async ()=>{
         <h2>登录</h2>
         首次使用者? <span>点此开始使用</span>
       </div>
-      <div class="list"><div class="tip_text">IGTB平台编号/登录名称</div><input type="text" v-model="loginData.username"></div>
-      <div class="list"><div class="tip_text">使用者代号</div><input type="text" v-model="loginData.codename"></div>
-      <div class="list"><div class="tip_text">密码</div><input type="password" v-model="loginData.password"></div>
-      <div class="list"><div class="tip_text">验证码</div><input type="text" v-model="loginData.authcode"></div>
+      <div class="list"><div class="tip_text" :class="{'tip_text_active': usernameFocused}">IGTB平台编号/登录名称</div><input type="text" v-model="loginData.username" @focus="handleUsernameFocus"  
+      @blur="handleUsernameBlur"></div>
+      <div class="list"><div class="tip_text" :class="{'tip_text_active': codenameFocused}">使用者代号</div><input type="text" v-model="loginData.codename" @focus="handleCodenameFocus"  
+      @blur="handleCodenameBlur"></div>
+      <div class="list"><div class="tip_text" :class="{'tip_text_active': passwordFocused}">密码</div><input type="password" v-model="loginData.password" @focus="handlePasswordFocus"  
+      @blur="handlePasswordBlur"></div>
+      <div class="list"><div class="tip_text" :class="{'tip_text_active': authcodeFocused}">验证码</div><input type="text" v-model="loginData.authcode" @focus="handleAuthcodeFocus"  
+      @blur="handleAuthcodeBlur"></div>
       <div class="login_button">
         <span class="btn" @click="handleLogin">基本登录</span>
         <span class="btn">双重认证登录</span>
@@ -66,7 +107,7 @@ const handleLogin = async ()=>{
      padding: 0 10px;
     .title{
       text-align: left;
-      margin: 65px 10px 20px 0px;
+      margin: 50px 10px 20px 0px;
       h2{
         margin-bottom: 5px;
       }
@@ -97,17 +138,14 @@ const handleLogin = async ()=>{
         text-align: left;
         }
       .tip_text_active{
-        position: absolute;
-        top: 0px;
-        left: 0;
-        text-align: left;
+        top: 0;
         font-size: 12px;
         font-weight: 700;
       }
     }
     .login_button{
       text-align: right;
-      margin-top: 20px;
+      margin-top: 30px;
       :first-child{
           margin-right: 20px;
         }
