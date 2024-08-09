@@ -8,3 +8,11 @@ export const handleLoginInterface = (data) => {
         data
     })
 }
+
+// 获取用户信息接口
+export const getUserInfoInterface = () => {
+    return request({
+        url: "/user/info",
+        method: "GET"
+    })
+}
