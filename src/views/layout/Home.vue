@@ -5,12 +5,14 @@ import { removeItem } from "@/utils/storage";
 import { useRouter } from "vue-router";
 import Children from "./Children.vue"
 import Children2 from "./Children2.vue"
+import Children3 from "./Children3.vue"
 
 const router = useRouter();
 
 const childrenData = ref("");
 const children2Ref = ref(null);
 const numberData = ref(100)
+const parentInputValue = ref("")
 let userInfo = reactive({
   username:""
 });
@@ -51,8 +53,11 @@ provide("numberData",numberData);
       <h2>子组件2{{children2Ref}}</h2>
       <button @click="handleAddCounter">递增</button>
     </div>
-
     <div>这个是操作跨组件间通信例子,全局数据<h2>{{numberData}}</h2></div>
+    <div>
+      父组件的输入框<input type="text" v-model="parentInputValue">
+      <children3 v-model="parentInputValue" v-model:modelName="numberData"></children3>
+    </div>
   </div>
 </template>
 
