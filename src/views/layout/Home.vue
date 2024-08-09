@@ -27,6 +27,9 @@ const handleLoginOut = () => {
   removeItem("token");
   router.push("/login");
 }
+const handleNavigateToSlot = ()=>{
+  router.push("/slot")
+}
 const receiveDataFromChildren = (data) => {
   childrenData.value = data;
 }
@@ -43,6 +46,7 @@ provide("numberData",numberData);
   <div>
     <header class="header">
       <h1>welcome to home, {{userInfo.username}}</h1>
+      <button @click="handleNavigateToSlot">跳转到插槽练习页面</button>
       <button class="login_out" @click="handleLoginOut">退出登录</button>
     </header>
     <h1>home组件</h1>
