@@ -1,13 +1,16 @@
 <script setup>
-import { onBeforeMount, ref, reactive } from "vue";
+import { onBeforeMount, ref, reactive, provide } from "vue";
 import { getUserInfoInterface } from "@/api/login";
 import { removeItem } from "@/utils/storage";
 import { useRouter } from "vue-router";
 import Children from "./Children.vue"
+import Children2 from "./Children2.vue"
 
 const router = useRouter();
 
 const childrenData = ref("");
+const children2Ref = ref(null);
+const numberData = ref(100)
 let userInfo = reactive({
   username:""
 });
@@ -25,6 +28,13 @@ const handleLoginOut = () => {
 const receiveDataFromChildren = (data) => {
   childrenData.value = data;
 }
+const handleAddCounter = ()=>{
+  children2Ref.value.number++;
+  console.log(children2Ref.value.name);
+  console.log(children2Ref.value.sex);
+  
+}
+provide("numberData",numberData);
 </script>
 
 <template>
@@ -36,6 +46,13 @@ const receiveDataFromChildren = (data) => {
     <h1>home组件</h1>
     <children :message = "userInfo" @sendDataToParent = "receiveDataFromChildren"></children>
     <div class="children_data" v-if="childrenData">这是子组件传递过来的值：<h2>{{childrenData}}</h2></div>
+    <children2 ref="children2Ref"></children2>
+    <div class="children2">
+      <h2>子组件2{{children2Ref}}</h2>
+      <button @click="handleAddCounter">递增</button>
+    </div>
+
+    <div>这个是操作跨组件间通信例子,全局数据<h2>{{numberData}}</h2></div>
   </div>
 </template>
 
@@ -58,5 +75,11 @@ const receiveDataFromChildren = (data) => {
 }
 .children_data {
   width: 200px;
+}
+.children2{
+    width: 200px;
+    height: 200px;
+    background-color: skyblue;
+    font-size: 12px;
 }
 </style>
